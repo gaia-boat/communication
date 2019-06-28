@@ -1,0 +1,5 @@
+pytest==4.5.0
+pytest-watch==4.2.0
+pycodestyle==2.5
+twine==1.13.0
+serial
