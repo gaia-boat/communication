@@ -8,7 +8,7 @@ install:
 
 script:
 - pytest tests/ -v
-- pycodestyle communication/*
+- pycodestyle gaia_communication/*
 
 after_script:
 - py.test --cov-report term --cov=. --ignore=tests/* --cov-report=html
