@@ -24,21 +24,14 @@ def gps_data():
 
     gpsd = gps(mode=WATCH_ENABLE | WATCH_NEWSTYLE)
     # '\t' = TAB to try and output the data in columns.
-    print('latitude\tlongitude\tspeed')
 
-    try:
+    report = gpsd.next()
+    if report['class'] == 'TPV':
 
-        while True:
-            report = gpsd.next()
-            if report['class'] == 'TPV':
-
-                print(getattr(report, 'lat', 0.0), "\t")
-                print(getattr(report, 'lon', 0.0), "\t")
-                # print(getattr(report,'epv','nan'),"\t")
-                # print(getattr(report,'ept','nan'),"\t",)
-                print(getattr(report, 'speed', 'nan'), "\t")
-                time.sleep(1)
-
-    except (KeyboardInterrupt, SystemExit):  # when you press ctrl+c
-        print("Done.\nExiting.")
-        return
+        lat = getattr(report, 'lat', 0.0)
+        lon = getattr(report, 'lon', 0.0)
+        # print(getattr(report,'epv','nan'),"\t")
+        # print(getattr(report,'ept','nan'),"\t",)
+        speed = getattr(report, 'speed', 'nan')
+        return (lat, lon, speed)
+    return (0, 0, 0)
