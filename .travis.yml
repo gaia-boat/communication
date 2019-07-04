@@ -10,11 +10,6 @@ script:
 - pytest tests/ -v
 - pycodestyle gaia_communication/*
 
-after_script:
-- py.test --cov-report term --cov=. --ignore=tests/* --cov-report=html
-- coverage xml
-- python-codacy-coverage -r coverage.xml
-
 notification:
   email: false
 
