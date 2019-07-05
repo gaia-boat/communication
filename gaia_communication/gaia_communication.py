@@ -2,30 +2,6 @@ from gps import *
 import time
 import serial
 
-s1 = None
-NUMBER_OF_TRIES = 3
-
-def check_serial():
-    if(s1 is None):
-        return False
-    return s1.isOpen()
-    
-
-def open_serial_port():
-    # !/usr/bin/env/python
-    port = "/dev/ttyUSB0"
-    rate = 9600
-    tries = 0
-    while(check_serial() != True):
-        if(tries > NUMBER_OF_TRIES):
-            tries += tries
-            print("ERROR: could not open serial port", port)
-            return False 
-        time.sleep(0.05)
-        # -*- coding: utf-8 -*-
-        s1 = serial.Serial(port, rate)
-    return True
-
 def gps_data():
     # ! /usr/bin/python
 
@@ -48,12 +24,18 @@ def gps_data():
     return (lat, lon, speed)
 
 def data_reciver():
+    port = "/dev/ttyUSB0"
+    rate = 9600
+    s1 = serial.Serial(port, rate)
     s1.flushInput()
     if s1.inWaiting()>0:
         inputValue = s1.readline()
         return inputValue
 
 def data_sender(line):
+    port = "/dev/ttyUSB0"
+    rate = 9600
+    s1 = serial.Serial(port, rate)
     s1.write(line)
 
 
