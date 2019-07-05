@@ -2,6 +2,9 @@ from gps import *
 import time
 import serial
 
+port = "/dev/ttyUSB1"
+rate = 9600
+
 def gps_data():
     # ! /usr/bin/python
 
@@ -23,19 +26,17 @@ def gps_data():
 
     return (lat, lon, speed)
 
-def data_reciver():
-    port = "/dev/ttyUSB0"
-    rate = 9600
-    s1 = serial.Serial(port, rate)
+def data_receiver():
+    s1 = serial.Serial(port, rate, timeout=3)
     s1.flushInput()
-    if s1.inWaiting()>0:
-        inputValue = s1.readline()
-        return inputValue
+#    if s1.inWaiting()>0:
+    inputValue = s1.readlines()
+    inputValue = inputValue[0].decode("utf-8")
+    return inputValue
 
 def data_sender(line):
-    port = "/dev/ttyUSB0"
-    rate = 9600
-    s1 = serial.Serial(port, rate)
+    line = bytes(line, 'utf-8')
+    s1 = serial.Serial(port, rate, timeout=3)
     s1.write(line)
 
 
