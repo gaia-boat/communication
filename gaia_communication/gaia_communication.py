@@ -2,22 +2,29 @@ from gps import *
 import time
 import serial
 
+s1 = None
+NUMBER_OF_TRIES = 3
 
-def interruption_to_esp():
+def check_serial():
+    if(s1 is None):
+        return False
+    return s1.isOpen()
+    
+
+def open_serial_port():
     # !/usr/bin/env/python
-
-    # -*- coding: utf-8 -*-
     port = "/dev/ttyUSB0"
     rate = 9600
-    s1 = serial.Serial(port, rate)
-
-# TODO: recieve location function
-    while True:
-        if s1.inWaiting() > 0:
-            # if inputValue in comp_list: RECIEVE_LOCATION = LOCATION
-            s1.write('0')
-            return
-
+    tries = 0
+    while(check_serial() != True):
+        if(tries > NUMBER_OF_TRIES):
+            tries += tries
+            print("ERROR: could not open serial port", port)
+            return False 
+        time.sleep(0.05)
+        # -*- coding: utf-8 -*-
+        s1 = serial.Serial(port, rate)
+    return True
 
 def gps_data():
     # ! /usr/bin/python
@@ -41,14 +48,12 @@ def gps_data():
     return (lat, lon, speed)
 
 def data_reciver():
-    #!/usr/bin/env/python
-    # -*- coding: utf-8 -*-
-    port = "/dev/ttyUSB0"
-    rate = 9600
-    s1 = serial.Serial(port, rate)
     s1.flushInput()
-    while True:
-        if s1.inWaiting()>0:
-            inputValue = s1.readline()
-            print(inputValue)
+    if s1.inWaiting()>0:
+        inputValue = s1.readline()
+        return inputValue
+
+def data_sender(line):
+    s1.write(line)
+
 
