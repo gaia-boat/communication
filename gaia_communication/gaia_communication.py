@@ -26,18 +26,19 @@ def gps_data():
 
     return (lat, lon, speed)
 
-def data_receiver():
-    s1 = serial.Serial(port, rate,timeout=10)
-    s1.flushInput()
-#    if s1.inWaiting()>0:
-    inputValue = s1.readlines()
-    print(inputValue)
-    inputValue = inputValue[0].decode("utf-8")
-    return inputValue
-
 def data_sender(line):
     line = bytes(line, 'utf-8')
-    s1 = serial.Serial(port, rate)
+    #s1 = serial.Serial(port, rate)
+    s1 = serial.Serial(port, rate,timeout=1)
+    s1.flushInput()
     s1.write(line)
 
-
+def data_receiver():
+    line = bytes('i', 'utf-8')
+    #s1 = serial.Serial(port, rate)
+    s1 = serial.Serial(port, rate,timeout=1)
+    s1.flushInput()
+    s1.write(line)
+    inputValue = s1.readline()
+    inputValue = inputValue.decode("utf-8")
+    return inputValue
