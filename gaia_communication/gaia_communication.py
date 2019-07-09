@@ -37,8 +37,11 @@ def data_receiver():
     line = bytes('i', 'utf-8')
     #s1 = serial.Serial(port, rate)
     s1 = serial.Serial(port, rate,timeout=1)
-    s1.flushInput()
+    #s1.flushInput()
     s1.write(line)
-    inputValue = s1.readline()
-    inputValue = inputValue.decode("utf-8")
+    inputValue = ''
+    while( inputValue ==''):
+        inputValue = s1.readline()
+        inputValue = inputValue.decode("utf-8")
+        print(inputValue)
     return inputValue
